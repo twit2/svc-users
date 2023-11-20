@@ -7,7 +7,6 @@ import { ProfileStore } from "./ProfileStore";
  * @param op The profile to create.
  */
 async function createProfile(op: UserInsertOp): Promise<User> {
-    // Avoid overflow and empty password
     if(op.avatarURL && (!Regexes.url_basic.test(op.avatarURL)))
         throw new Error("Invalid avatar URL.");
 
