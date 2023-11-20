@@ -11,7 +11,7 @@ async function init(url: string) {
 
     // Setup RPC server for user profile stuff
     const server = new MsgQueue.rpc.RPCServer(mq);
-    await server.init('user-service');
+    await server.init('t2-user-service');
     ProfileRPC.init(server);
 
     // Setup rpc client
