@@ -28,7 +28,6 @@ export const UserModel = mongoose.model<User>('user', new mongoose.Schema({
     biography: {
         type: String,
         required: false,
-        default: "",
         min: Limits.userProfile.biography.min,
         max: Limits.userProfile.biography.max,
     },

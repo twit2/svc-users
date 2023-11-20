@@ -1,7 +1,7 @@
 import { configDotenv } from 'dotenv';
 import express from 'express';
 import { ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-library';
-import { handleMyUser } from './routes/MyUser'; 
+import { handleGetUser } from './routes/MyUser'; 
 import { UserWorker } from './UserWorker';
 import { ProfileStore } from './ProfileStore';
 
@@ -20,7 +20,8 @@ app.use(SessionVerifierMiddleware.handle);
 
 // Routes
 // ------------------------------------------------
-app.get('/@me', handleMyUser);
+app.get('/@me', handleGetUser);
+app.get('/:id', handleGetUser);
 
 app.use(ErrorHandlingMiddleware.handle);
 
