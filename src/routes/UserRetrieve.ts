@@ -19,8 +19,14 @@ export async function handleGetUser(req: Request, res: Response, next: NextFunct
 
     res.contentType('json');
 
-    // Retrieve profile
-    const profile = await ProfileMgr.getProfileById(targetId);
+    // Check retrieval method
+    // If the ID starts with an @, we should look for a username
+    let profile;
+    
+    if(targetId[0] == '@')
+        profile = await ProfileMgr.getProfileByName(targetId.substring(1));
+    else
+        profile = await ProfileMgr.getProfileById(targetId);
 
     if(profile == null) {
         res.status(404);
