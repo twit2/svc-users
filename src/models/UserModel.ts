@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 import { Limits, Regexes, User } from '@twit2/std-library';
 
-export const UserModel = mongoose.model<User>('credential', new mongoose.Schema({
+export const UserModel = mongoose.model<User>('user', new mongoose.Schema({
     id: {
         type: String,
         required: true

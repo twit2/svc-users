@@ -23,15 +23,18 @@ describe('user profile manager tests', () => {
 
         let profileOps : UserInsertOp[] = [
             {
+                id: "12345",
                 username: "testing",
                 avatarURL: "invalid  not a valid url://",
             },
             {
+                id: "123451111",
                 username: "",
                 biography: (-1) as unknown as string,
                 avatarURL: "http://test.com/test.png"
             },
             {
+                id: "1234523222",
                 username: "",
                 biography: "".repeat(Limits.userProfile.biography.max * 2),
                 avatarURL: "http://test.com/test.png"
@@ -51,6 +54,7 @@ describe('user profile manager tests', () => {
     // Check if we can make a basic user profile
     test('profile: create basic profile', async() => {
         let user = await ProfileMgr.createProfile({
+            id: "1234567",
             username: "hello"
         });
 
@@ -62,6 +66,7 @@ describe('user profile manager tests', () => {
 
     test('profile: create extended profile (bio + avatarUrl)', async() =>{
         let user = await ProfileMgr.createProfile({
+            id: "123458889",
             username: "hello2",
             biography: "User profile text",
             avatarURL: "https://example.com/image.png"

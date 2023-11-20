@@ -17,7 +17,7 @@ async function createProfile(op: UserInsertOp): Promise<User> {
 
     // Create the user.
     const user : User = {
-        id: generateId({ workerId: process.pid, procId: process.ppid }),
+        id: op.id,
         username: op.username,
         dateJoined: new Date(),
         avatarURL: op.avatarURL,
@@ -34,11 +34,20 @@ async function createProfile(op: UserInsertOp): Promise<User> {
  * Retrieves a profile by username.
  * @param username The username to retrieve the profile for.
  */
-async function getProfile(username: string) {
+async function getProfileByName(username: string) {
     return ProfileStore.findUserByUName(username);
+}
+
+/**
+ * Retrieves a profile by id.
+ * @param username The user id to retrieve the profile for.
+ */
+async function getProfileById(id: string) {
+    return ProfileStore.findUserById(id);
 }
 
 export const ProfileMgr = {
     createProfile,
-    getProfile
+    getProfileByName,
+    getProfileById
 }
