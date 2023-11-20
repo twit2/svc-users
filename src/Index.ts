@@ -1,8 +1,9 @@
 import { configDotenv } from 'dotenv';
 import express from 'express';
-import { SessionVerifierMiddleware } from '@twit2/std-library';
+import { ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-library';
 import { handleMyUser } from './routes/MyUser'; 
 import { UserWorker } from './UserWorker';
+import { ProfileStore } from './ProfileStore';
 
 // Load ENV parameters
 configDotenv();
@@ -21,11 +22,14 @@ app.use(SessionVerifierMiddleware.handle);
 // ------------------------------------------------
 app.get('/@me', handleMyUser);
 
+app.use(ErrorHandlingMiddleware.handle);
+
 /**
  * Main entry point for program.
  */
 async function main() {
-    UserWorker.init(process.env.MQ_URL as string);
+    await ProfileStore.init();
+    await UserWorker.init(process.env.MQ_URL as string);
 
     // Listen at the port
     app.listen(port, () => {
