@@ -1,7 +1,7 @@
 import { configDotenv } from 'dotenv';
 import express from 'express';
 import { ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-library';
-import { handleGetUser } from './routes/MyUser'; 
+import { handleGetUser } from './routes/UserRetrieve'; 
 import { UserWorker } from './UserWorker';
 import { ProfileStore } from './ProfileStore';
 
