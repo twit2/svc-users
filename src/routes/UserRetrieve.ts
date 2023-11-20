@@ -39,5 +39,5 @@ export async function handleGetUser(req: Request, res: Response, next: NextFunct
         followingCount: profile.following.length
     }
 
-    res.send(usrObj);
+    res.send(APIRespConstructor.success(usrObj));
 }
