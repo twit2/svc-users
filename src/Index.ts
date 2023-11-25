@@ -4,6 +4,7 @@ import { ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-l
 import { handleGetUser } from './routes/UserRetrieve'; 
 import { UserWorker } from './UserWorker';
 import { ProfileStore } from './ProfileStore';
+require('express-async-errors');
 
 // Load ENV parameters
 configDotenv();
