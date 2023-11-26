@@ -26,8 +26,11 @@ async function createProfile(op: UserInsertOp): Promise<User> {
     if(!ajv.validate(schema, op))
         throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
 
-    if(op.avatarURL && (!Regexes.url_basic.test(op.avatarURL)))
-        throw new Error("Invalid avatar URL.");
+    // Check avatar URL
+    if(op.avatarURL) {
+        if((op.avatarURL !== '') && (!Regexes.url_basic.test(op.avatarURL)))
+            throw new Error("Invalid avatar URL.");
+    }
 
     const prevProfile = await ProfileStore.findUserByUName(op.username);
 
@@ -69,7 +72,13 @@ async function updateProfile(op: UserUpdateOp): Promise<User> {
 
     if(!ajv.validate(schema, op))
         throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
-    
+
+    // Ensure avatar URL is correct.
+    if(op.avatarURL) {
+        if((op.avatarURL !== '') && (!Regexes.url_basic.test(op.avatarURL)))
+            throw new Error("Invalid avatar URL.");
+    }
+
     return await ProfileStore.updateUser(op.id, op);
 }
 
