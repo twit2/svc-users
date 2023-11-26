@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { UserModel } from "./models/UserModel";
 import { User } from '@twit2/std-library'
+import { UserUpdateOp } from "./op/UserUpdateOp";
 
 /**
  * Initializes the user store.
@@ -48,9 +49,34 @@ async function findUserById(id: string): Promise<User | null> {
     return await UserModel.findOne({ id }).exec();
 }
 
+/**
+ * Updates a user profile.
+ * @param id The ID of the user to update.
+ * @param newUser The new user profile object to use.
+ */
+async function updateUser(id: string, newUser: UserUpdateOp): Promise<User> {
+    const user = await UserModel.findOne({ id });
+    
+    if(!user)
+        throw new Error("User does not exist.");
+
+    if(newUser.avatarURL)
+        user.avatarURL = newUser.avatarURL;
+
+    if(newUser.displayName)
+        user.displayName = newUser.displayName;
+
+    if(newUser.biography)
+        user.biography = newUser.biography;
+    
+    await user.save();
+    return user.toJSON();
+}
+
 export const ProfileStore = {
     init,
     createUser,
+    updateUser,
     findUserByUName,
     findUserById
 }

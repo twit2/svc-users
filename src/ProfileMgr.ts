@@ -1,12 +1,31 @@
-import { Regexes, User, generateId } from "@twit2/std-library";
+import { APIError, APIResponseCodes, Limits, Regexes, User, generateId } from "@twit2/std-library";
 import { UserInsertOp } from "./op/UserInsertOp";
 import { ProfileStore } from "./ProfileStore";
+import { UserUpdateOp } from "./op/UserUpdateOp";
+import Ajv from "ajv";
+
+const ajv = new Ajv();
 
 /**
  * Registers a new user profile.
  * @param op The profile to create.
  */
 async function createProfile(op: UserInsertOp): Promise<User> {
+    const schema = {
+        type: "object",
+        properties: {
+            id: { type: "string" },
+            username: { type: "string" },
+            avatarURL: { type: "string", minLength: Limits.general.hard.min, maxLength: Limits.general.hard.max },
+            biography: { type: "string", minLength: Limits.userProfile.biography.min, maxLength: Limits.userProfile.biography.max }
+        },
+        required: ["id", "username"],
+        additionalProperties: false
+    }
+
+    if(!ajv.validate(schema, op))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+
     if(op.avatarURL && (!Regexes.url_basic.test(op.avatarURL)))
         throw new Error("Invalid avatar URL.");
 
@@ -20,14 +39,38 @@ async function createProfile(op: UserInsertOp): Promise<User> {
         id: op.id,
         username: op.username,
         dateJoined: new Date(),
-        avatarURL: op.avatarURL,
-        biography: op.biography,
+        avatarURL: op.avatarURL ?? '',
+        biography: op.biography ?? '',
+        displayName: op.displayName ?? '',
         following: [],
         followers: []
     };
 
     await ProfileStore.createUser(user);
     return user;
+}
+
+/**
+ * Updates a user profile.
+ * @param op The profile update operation.
+ */
+async function updateProfile(op: UserUpdateOp): Promise<User> {
+    const schema = {
+        type: "object",
+        properties: {
+            id: { type: "string" },
+            avatarURL: { type: "string", minLength: Limits.general.hard.min, maxLength: Limits.general.hard.max },
+            displayName: { type: "string", minLength: Limits.userProfile.displayName.min, maxLength: Limits.userProfile.displayName.max },
+            biography: { type: "string", minLength: Limits.userProfile.biography.min, maxLength: Limits.userProfile.biography.max }
+        },
+        required: ["id"],
+        additionalProperties: false
+    }
+
+    if(!ajv.validate(schema, op))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+    
+    return await ProfileStore.updateUser(op.id, op);
 }
 
 /**
@@ -48,6 +91,7 @@ async function getProfileById(id: string) {
 
 export const ProfileMgr = {
     createProfile,
+    updateProfile,
     getProfileByName,
     getProfileById
 }

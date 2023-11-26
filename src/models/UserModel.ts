@@ -21,7 +21,6 @@ export const UserModel = mongoose.model<User>('user', new mongoose.Schema({
     avatarURL: {
         type: String,
         required: false,
-        validate: (v: string)=>Regexes.url_basic.test(v),
         min: Limits.general.hard.min,
         max: Limits.general.hard.max
     },

@@ -4,6 +4,7 @@ import { ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-l
 import { handleGetUser } from './routes/UserRetrieve'; 
 import { UserWorker } from './UserWorker';
 import { ProfileStore } from './ProfileStore';
+import { handleUpdateUser } from './routes/UserUpdate';
 require('express-async-errors');
 
 // Load ENV parameters
@@ -22,6 +23,7 @@ app.use(SessionVerifierMiddleware.handle);
 // Routes
 // ------------------------------------------------
 app.get('/@me', handleGetUser);
+app.patch('/@me', handleUpdateUser);
 app.get('/:id', handleGetUser);
 
 app.use(ErrorHandlingMiddleware.handle);

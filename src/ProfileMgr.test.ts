@@ -58,8 +58,9 @@ describe('user profile manager tests', () => {
             username: "hello"
         });
 
-        expect(user.avatarURL).toBeUndefined();
-        expect(user.biography).toBeUndefined();
+        expect(user.avatarURL).toBe('');
+        expect(user.biography).toBe('');
+        expect(user.displayName).toBe('');
         expect(user.username).toBe("hello");
         expect(user.id).not.toBeUndefined();
     });
@@ -74,6 +75,28 @@ describe('user profile manager tests', () => {
 
         expect(user.avatarURL).not.toBeUndefined();
         expect(user.biography).toBe("User profile text");
+    });
+
+    test('profile: update biography to some text', async() => {
+        const newProfile = await ProfileMgr.updateProfile({
+            id: "123458889",
+            biography: "Testing 12345"
+        });
+
+        expect(newProfile.biography).toBe("Testing 12345");
+    });
+
+    test('profile: reject overflown biography update request', async() => {
+        try {
+            await ProfileMgr.updateProfile({
+                id: "123458889",
+                biography: "Testing 12345".repeat(200)
+            });
+
+            fail("Biography was updated - this shouldn't happen!");
+        } catch(e) {
+            
+        }
     });
 
     afterAll(async() => {
