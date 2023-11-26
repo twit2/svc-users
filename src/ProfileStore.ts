@@ -60,13 +60,13 @@ async function updateUser(id: string, newUser: UserUpdateOp): Promise<User> {
     if(!user)
         throw new Error("User does not exist.");
 
-    if(newUser.avatarURL)
+    if(newUser.avatarURL !== undefined)
         user.avatarURL = newUser.avatarURL;
 
-    if(newUser.displayName)
+    if(newUser.displayName !== undefined)
         user.displayName = newUser.displayName;
 
-    if(newUser.biography)
+    if(newUser.biography !== undefined)
         user.biography = newUser.biography;
     
     await user.save();
