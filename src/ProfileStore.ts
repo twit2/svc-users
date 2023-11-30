@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { UserModel } from "./models/UserModel";
-import { User } from '@twit2/std-library'
+import { GenericPagedOp, User } from '@twit2/std-library'
 import { UserUpdateOp } from "./op/UserUpdateOp";
 
 /**
@@ -73,10 +73,19 @@ async function updateUser(id: string, newUser: UserUpdateOp): Promise<User> {
     return user.toJSON();
 }
 
+/**
+ * Gets the latest profiles/
+ * @param op The operation arguments.
+ */
+async function getLatestProfiles(page: number, limit: number) {
+    return await UserModel.find().sort({ dateJoined: -1 }).skip(page * limit).limit(limit);
+}
+
 export const ProfileStore = {
     init,
     createUser,
     updateUser,
     findUserByUName,
-    findUserById
+    findUserById,
+    getLatestProfiles
 }

@@ -1,10 +1,20 @@
-import { APIError, APIResponseCodes, Limits, Regexes, User, generateId } from "@twit2/std-library";
+import { APIError, APIResponseCodes, GenericPagedOp, Limits, PaginatedAPIData, Regexes, User, generateId } from "@twit2/std-library";
 import { UserInsertOp } from "./op/UserInsertOp";
 import { ProfileStore } from "./ProfileStore";
 import { UserUpdateOp } from "./op/UserUpdateOp";
 import Ajv from "ajv";
 
 const ajv = new Ajv();
+const PAGE_SIZE = 10;
+
+const genericPageSchema = {
+    type: "object",
+    properties: {
+        page: { type: "number" }
+    },
+    required: ["page"],
+    additionalProperties: false
+}
 
 /**
  * Registers a new user profile.
@@ -91,6 +101,20 @@ async function getProfileByName(username: string) {
 }
 
 /**
+ * Retrieves the latest profiles.
+ */
+async function getLatestProfiles(op: GenericPagedOp): Promise<PaginatedAPIData<User>> {
+    if(!ajv.validate(genericPageSchema, op))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+
+    return {
+        currentPage: -1,
+        pageSize: PAGE_SIZE,
+        data: await ProfileStore.getLatestProfiles(op.page, PAGE_SIZE)
+    };
+}
+
+/**
  * Retrieves a profile by id.
  * @param username The user id to retrieve the profile for.
  */
@@ -102,5 +126,6 @@ export const ProfileMgr = {
     createProfile,
     updateProfile,
     getProfileByName,
+    getLatestProfiles,
     getProfileById
 }

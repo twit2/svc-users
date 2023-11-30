@@ -5,6 +5,7 @@ import { handleGetUser } from './routes/UserRetrieve';
 import { UserWorker } from './UserWorker';
 import { ProfileStore } from './ProfileStore';
 import { handleUpdateUser } from './routes/UserUpdate';
+import { handleGetLatestUsers } from './routes/UserGetLatest';
 require('express-async-errors');
 
 // Load ENV parameters
@@ -24,6 +25,7 @@ app.use(SessionVerifierMiddleware.handle);
 // ------------------------------------------------
 app.get('/@me', handleGetUser);
 app.patch('/@me', handleUpdateUser);
+app.get('/latest/:page', handleGetLatestUsers);
 app.get('/:id', handleGetUser);
 
 app.use(ErrorHandlingMiddleware.handle);

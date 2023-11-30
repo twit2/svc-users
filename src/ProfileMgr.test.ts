@@ -92,12 +92,18 @@ describe('user profile manager tests', () => {
                 id: "123458889",
                 biography: "Testing 12345".repeat(200)
             });
-
-            fail("Biography was updated - this shouldn't happen!");
         } catch(e) {
-            
+            return;
         }
+
+        throw new Error("Biography was updated - this shouldn't happen!");
     });
+
+    test('profile: get latest users', async() => {
+        const profiles = await ProfileMgr.getLatestProfiles({ page: 0 });
+        expect(profiles.data).not.toBeUndefined();
+        expect(profiles.data?.length).toBe(2); // In this test, only 2 successful profiles were ever made
+    })
 
     afterAll(async() => {
         await mongoose.disconnect();
