@@ -35,7 +35,7 @@ export async function handleGetUser(req: Request, res: Response, next: NextFunct
     }
     
     const usrObj : UserRetrieveOp = {
-        avatarUrl: profile.avatarURL ?? null,
+        avatarURL: profile.avatarURL ?? null,
         dateJoined: profile.dateJoined,
         biography: profile.biography ?? null,
         displayName: profile.displayName ?? null,

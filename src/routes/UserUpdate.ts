@@ -22,7 +22,7 @@ export async function handleUpdateUser(req: Request, res: Response, next: NextFu
 
     // Send updated object
     const usrObj : UserRetrieveOp = {
-        avatarUrl: profile.avatarURL ?? null,
+        avatarURL: profile.avatarURL ?? null,
         dateJoined: profile.dateJoined,
         biography: profile.biography ?? null,
         displayName: profile.displayName ?? null,
