@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { UserModel } from "./models/UserModel";
 import { GenericPagedOp, User } from '@twit2/std-library'
 import { UserUpdateOp } from "./op/UserUpdateOp";
+import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
 
 /**
  * Initializes the user store.
@@ -60,9 +61,6 @@ async function updateUser(id: string, newUser: UserUpdateOp): Promise<User> {
     if(!user)
         throw new Error("User does not exist.");
 
-    if(newUser.avatarURL !== undefined)
-        user.avatarURL = newUser.avatarURL;
-
     if(newUser.displayName !== undefined)
         user.displayName = newUser.displayName;
 
@@ -81,11 +79,28 @@ async function getLatestProfiles(page: number, limit: number) {
     return await UserModel.find().sort({ dateJoined: -1 }).skip(page * limit).limit(limit);
 }
 
+/**
+ * Updates the user avatar URL.
+ * @param url 
+ */
+async function updateUserAvatar(op: UserAvatarUpdateOp) {
+    const user = await UserModel.findOne({ id: op.id });
+
+    if(!user)
+        throw new Error("User does not exist.");
+
+    user.avatarURL = op.avatarURL;
+
+    await user.save();
+    return user.toJSON();
+}
+
 export const ProfileStore = {
     init,
     createUser,
     updateUser,
     findUserByUName,
     findUserById,
-    getLatestProfiles
+    getLatestProfiles,
+    updateUserAvatar
 }

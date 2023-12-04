@@ -16,7 +16,6 @@ export async function handleUpdateUser(req: Request, res: Response, next: NextFu
 
     const profile = await ProfileMgr.updateProfile({
         id: targetId,
-        avatarURL: req.body.avatarURL,
         biography: req.body.biography,
         displayName: req.body.displayName
     });

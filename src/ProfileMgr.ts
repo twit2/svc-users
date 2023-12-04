@@ -3,6 +3,7 @@ import { UserInsertOp } from "./op/UserInsertOp";
 import { ProfileStore } from "./ProfileStore";
 import { UserUpdateOp } from "./op/UserUpdateOp";
 import Ajv from "ajv";
+import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
 
 const ajv = new Ajv();
 const PAGE_SIZE = 10;
@@ -72,7 +73,6 @@ async function updateProfile(op: UserUpdateOp): Promise<User> {
         type: "object",
         properties: {
             id: { type: "string" },
-            avatarURL: { type: "string", minLength: Limits.general.hard.min, maxLength: Limits.general.hard.max },
             displayName: { type: "string", minLength: Limits.userProfile.displayName.min, maxLength: Limits.userProfile.displayName.max },
             biography: { type: "string", minLength: Limits.userProfile.biography.min, maxLength: Limits.userProfile.biography.max }
         },
@@ -83,13 +83,35 @@ async function updateProfile(op: UserUpdateOp): Promise<User> {
     if(!ajv.validate(schema, op))
         throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
 
-    // Ensure avatar URL is correct.
-    if(op.avatarURL) {
-        if((op.avatarURL !== '') && (!Regexes.url_basic.test(op.avatarURL)))
-            throw new Error("Invalid avatar URL.");
-    }
-
     return await ProfileStore.updateUser(op.id, op);
+}
+
+/**
+ * Updates the user's avatar URL.
+ * @param op The update operation.
+ */
+async function updateAvatar(op: UserAvatarUpdateOp): Promise<User> {
+    const schema = {
+        type: "object",
+        properties: {
+            id: { type: "string" },
+            avatarURL: { type: "string", minLength: Limits.general.hard.min, maxLength: Limits.general.hard.max }
+        },
+        required: ["id", "avatarURL"],
+        additionalProperties: false
+    };
+
+    if(!ajv.validate(schema, op))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+
+    // Ensure avatar URL is correct
+    // It should be in the CDN format
+    const urlParts = op.avatarURL.split('/');
+    
+    if((urlParts.length !== 3) && (urlParts[0] !== "avatar"))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+
+    return await ProfileStore.updateUserAvatar(op);
 }
 
 /**
@@ -127,5 +149,6 @@ export const ProfileMgr = {
     updateProfile,
     getProfileByName,
     getLatestProfiles,
-    getProfileById
+    getProfileById,
+    updateAvatar
 }
