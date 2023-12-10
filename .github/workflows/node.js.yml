@@ -60,7 +60,7 @@ jobs:
     #- run: npm test
 
     - name: Store artifacts
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: dist
         if-no-files-found: error
