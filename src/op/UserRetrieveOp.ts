@@ -5,6 +5,7 @@ export interface UserRetrieveOp {
     avatarURL?: string | null;
     biography?: string | null;
     dateJoined: Date;
+    verified: boolean;
     followCount: number;
     followingCount: number;
 }

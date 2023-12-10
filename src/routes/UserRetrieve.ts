@@ -41,6 +41,7 @@ export async function handleGetUser(req: Request, res: Response, next: NextFunct
         displayName: profile.displayName ?? null,
         username: profile.username,
         id: profile.id,
+        verified: profile.verified,
         followCount: profile.followers.length,
         followingCount: profile.following.length
     }

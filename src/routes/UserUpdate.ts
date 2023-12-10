@@ -28,6 +28,7 @@ export async function handleUpdateUser(req: Request, res: Response, next: NextFu
         displayName: profile.displayName ?? null,
         username: profile.username,
         id: profile.id,
+        verified: profile.verified,
         followCount: profile.followers.length,
         followingCount: profile.following.length
     }

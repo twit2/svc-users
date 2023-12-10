@@ -30,6 +30,10 @@ export const UserModel = mongoose.model<User>('user', new mongoose.Schema({
         min: Limits.userProfile.biography.min,
         max: Limits.userProfile.biography.max,
     },
+    verified: {
+        type: Boolean,
+        required: true
+    },
     dateJoined: {
         type: Date,
         required: true

@@ -21,6 +21,7 @@ export async function handleGetLatestUsers(req: Request, res: Response, next: Ne
             displayName: profile.displayName ?? null,
             username: profile.username,
             id: profile.id,
+            verified: profile.verified,
             followCount: profile.followers.length,
             followingCount: profile.following.length
         }));

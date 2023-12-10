@@ -56,6 +56,7 @@ async function createProfile(op: UserInsertOp): Promise<User> {
         avatarURL: op.avatarURL ?? '',
         biography: op.biography ?? '',
         displayName: op.displayName ?? '',
+        verified: false,
         following: [],
         followers: []
     };
