@@ -16,6 +16,7 @@ export async function handleGetLatestUsers(req: Request, res: Response, next: Ne
     if(profiles.data) {
         profiles.data.map(profile => ({
             avatarURL: profile.avatarURL ?? null,
+            bannerURL: profile.bannerURL ?? null,
             dateJoined: profile.dateJoined,
             biography: profile.biography ?? null,
             displayName: profile.displayName ?? null,

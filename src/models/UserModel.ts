@@ -24,6 +24,12 @@ export const UserModel = mongoose.model<User & VersionedDoc>('user', new mongoos
         min: Limits.general.hard.min,
         max: Limits.general.hard.max
     },
+    bannerURL: {
+        type: String,
+        required: false,
+        min: Limits.general.hard.min,
+        max: Limits.general.hard.max
+    },
     biography: {
         type: String,
         required: false,
@@ -50,6 +56,6 @@ export const UserModel = mongoose.model<User & VersionedDoc>('user', new mongoos
     schemaVer: {
         type: Number,
         required: true,
-        default: 1
+        default: 2
     }
 }));

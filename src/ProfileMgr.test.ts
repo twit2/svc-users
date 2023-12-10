@@ -124,6 +124,24 @@ describe('user profile manager tests', () => {
         expect(updatedProfile.verified).toBe(false);
     })
 
+    test('profile: add avatar URL', async() => {
+        const profile = await ProfileMgr.getProfileByName('test') as User;
+        expect(profile).not.toBeUndefined();
+        expect(profile).not.toBeNull();
+
+        const newProfile = await ProfileMgr.updateAvatar({ id: profile.id, avatarURL: "/avatar/12345.png" });
+        expect(newProfile.avatarURL).toBe("/avatar/12345.png");
+    });
+
+    test('profile: add banner URL', async() => {
+        const profile = await ProfileMgr.getProfileByName('test') as User;
+        expect(profile).not.toBeUndefined();
+        expect(profile).not.toBeNull();
+
+        const newProfile = await ProfileMgr.updateBanner({ id: profile.id, bannerURL: "/banners/12345.png" });
+        expect(newProfile.bannerURL).toBe("/banners/12345.png");
+    });
+
     afterAll(async() => {
         await mongoose.disconnect();
         await mongoServer.stop();

@@ -2,6 +2,7 @@ import { RPCServer } from "@twit2/std-library/dist/comm/rpc/RPCServer";
 import { UserInsertOp } from "../op/UserInsertOp";
 import { ProfileMgr } from "../ProfileMgr";
 import { UserAvatarUpdateOp } from "../op/UserAvatarUpdateOp";
+import { UserBannerUpdateOp } from "../op/UserBannerUpdateOp";
 
 /**
  * Initializes the user profile RPC server.
@@ -19,6 +20,13 @@ function init(server: RPCServer) {
         name: 'update-avatar',
         callback: async (op: UserAvatarUpdateOp) => {
             return await ProfileMgr.updateAvatar(op);
+        }
+    });
+
+    server.defineProcedure({
+        name: 'update-banner',
+        callback: async (op: UserBannerUpdateOp) => {
+            return await ProfileMgr.updateBanner(op);
         }
     });
 

@@ -3,6 +3,7 @@ export interface UserRetrieveOp {
     displayName?: string | null;
     username: string;
     avatarURL?: string | null;
+    bannerURL?: string | null;
     biography?: string | null;
     dateJoined: Date;
     verified: boolean;

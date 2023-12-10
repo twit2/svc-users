@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import { UserModel } from "./models/UserModel";
-import { GenericPagedOp, User } from '@twit2/std-library'
+import { User } from '@twit2/std-library'
 import { UserUpdateOp } from "./op/UserUpdateOp";
 import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
+import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
 
 /**
  * Initializes the user store.
@@ -98,6 +99,22 @@ async function updateUserAvatar(op: UserAvatarUpdateOp) {
     return user.toJSON();
 }
 
+/**
+ * Updates the user banner URL.
+ * @param url 
+ */
+async function updateUserBanner(op: UserBannerUpdateOp) {
+    const user = await UserModel.findOne({ id: op.id });
+
+    if(!user)
+        throw new Error("User does not exist.");
+
+    user.bannerURL = op.bannerURL;
+
+    await user.save();
+    return user.toJSON();
+}
+
 export const ProfileStore = {
     init,
     createUser,
@@ -105,5 +122,6 @@ export const ProfileStore = {
     findUserByUName,
     findUserById,
     getLatestProfiles,
-    updateUserAvatar
+    updateUserAvatar,
+    updateUserBanner
 }

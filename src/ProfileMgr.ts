@@ -5,6 +5,7 @@ import { UserUpdateOp } from "./op/UserUpdateOp";
 import Ajv from "ajv";
 import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
 import { UserVerifyOp } from "./op/UserVerifyOp";
+import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
 
 const ajv = new Ajv();
 const PAGE_SIZE = 10;
@@ -55,6 +56,7 @@ async function createProfile(op: UserInsertOp): Promise<User> {
         username: op.username,
         dateJoined: new Date(),
         avatarURL: op.avatarURL ?? '',
+        bannerURL: '',
         biography: op.biography ?? '',
         displayName: op.displayName ?? '',
         verified: false,
@@ -117,6 +119,34 @@ async function updateAvatar(op: UserAvatarUpdateOp): Promise<User> {
 }
 
 /**
+ * Updates the user's banner URL.
+ * @param op The update operation.
+ */
+async function updateBanner(op: UserBannerUpdateOp): Promise<User> {
+    const schema = {
+        type: "object",
+        properties: {
+            id: { type: "string" },
+            bannerURL: { type: "string", minLength: Limits.general.hard.min, maxLength: Limits.general.hard.max }
+        },
+        required: ["id", "bannerURL"],
+        additionalProperties: false
+    };
+
+    if(!ajv.validate(schema, op))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+
+    // Ensure banner URL is correct
+    // It should be in the CDN format
+    const urlParts = op.bannerURL.split('/');
+    
+    if((urlParts.length !== 3) && (urlParts[0] !== "banner"))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+
+    return await ProfileStore.updateUserBanner(op);
+}
+
+/**
  * Retrieves a profile by username.
  * @param username The username to retrieve the profile for.
  */
@@ -176,5 +206,6 @@ export const ProfileMgr = {
     getLatestProfiles,
     getProfileById,
     updateAvatar,
+    updateBanner,
     setVerified
 }

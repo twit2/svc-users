@@ -22,6 +22,7 @@ export async function handleVerifyUser(req: Request, res: Response, next: NextFu
     // Send updated object
     const usrObj : UserRetrieveOp = {
         avatarURL: profile.avatarURL ?? null,
+        bannerURL: profile.bannerURL ?? null,
         dateJoined: profile.dateJoined,
         biography: profile.biography ?? null,
         displayName: profile.displayName ?? null,
