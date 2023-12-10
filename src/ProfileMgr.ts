@@ -104,7 +104,7 @@ async function updateAvatar(op: UserAvatarUpdateOp): Promise<User> {
     // It should be in the CDN format
     const urlParts = op.avatarURL.split('/');
     
-    if((urlParts.length !== 3) && (urlParts[0] !== "avatar"))
+    if((urlParts.length !== 3) || (urlParts[1] !== "avatars"))
         throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
 
     return await ProfileStore.updateUserAvatar(op);
@@ -132,7 +132,7 @@ async function updateBanner(op: UserBannerUpdateOp): Promise<User> {
     // It should be in the CDN format
     const urlParts = op.bannerURL.split('/');
     
-    if((urlParts.length !== 3) && (urlParts[0] !== "banner"))
+    if((urlParts.length !== 3) || (urlParts[1] !== "banners"))
         throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
 
     return await ProfileStore.updateUserBanner(op);

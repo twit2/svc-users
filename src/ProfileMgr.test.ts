@@ -30,6 +30,15 @@ describe('user profile manager tests', () => {
         expect(user.id).not.toBeUndefined();
     });
 
+    test('profile: should not create profile with same username', async ()=>{
+        await TestingUtils.mustFailAsync(async()=>{
+            await ProfileMgr.createProfile({
+                id: "1234567",
+                username: "hello"
+            });
+        }, "User was made.");
+    });
+
     test('profile: id lookup should succeed', async() => {
         let user = await ProfileMgr.getProfileById("1234567");
         expect(user).not.toBeUndefined();
@@ -51,6 +60,12 @@ describe('user profile manager tests', () => {
         await TestingUtils.mustFailAsync(async()=>{
             await ProfileMgr.createProfile({ id: "12345", username: "😳😳😳" })
         }, "username was not rejected");
+    });
+
+    test('profile: reject invalid avatar URL on profile creation', async() =>{
+        await TestingUtils.mustFailAsync(async()=>{
+            await ProfileMgr.createProfile({ id: "12345777", username: "test6645", avatarURL: 'urltest asdf][324' })
+        }, "avatarURL was not rejected");
     });
 
     test('profile: create extended profile (bio + avatarUrl)', async() =>{
@@ -142,8 +157,16 @@ describe('user profile manager tests', () => {
         expect(profile).not.toBeUndefined();
         expect(profile).not.toBeNull();
 
-        const newProfile = await ProfileMgr.updateAvatar({ id: profile.id, avatarURL: "/avatar/12345.png" });
-        expect(newProfile.avatarURL).toBe("/avatar/12345.png");
+        const newProfile = await ProfileMgr.updateAvatar({ id: profile.id, avatarURL: "/avatars/12345.png" });
+        expect(newProfile.avatarURL).toBe("/avatars/12345.png");
+    });
+
+    test('profile: reject invalid avatar URL', async() => {
+        const profile = await ProfileMgr.getProfileByName('test') as User;
+        expect(profile).not.toBeUndefined();
+        expect(profile).not.toBeNull();
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateAvatar({ id: profile.id, avatarURL: "invalidparts"})}, "invalid avatarURL was accepted");
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateAvatar({ id: profile.id, avatarURL: "/repository/invalid"})}, "avatarURL with invalid repository was accepted");
     });
 
     test('profile: add banner URL', async() => {
@@ -153,6 +176,14 @@ describe('user profile manager tests', () => {
 
         const newProfile = await ProfileMgr.updateBanner({ id: profile.id, bannerURL: "/banners/12345.png" });
         expect(newProfile.bannerURL).toBe("/banners/12345.png");
+    });
+
+    test('profile: reject invalid banner URL', async() => {
+        const profile = await ProfileMgr.getProfileByName('test') as User;
+        expect(profile).not.toBeUndefined();
+        expect(profile).not.toBeNull();
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateBanner({ id: profile.id, bannerURL: "invalidparts"})}, "invalid bannerURL was accepted");
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateBanner({ id: profile.id, bannerURL: "/repository/invalid"})}, "bannerURL with invalid repository was accepted");
     });
 
     afterAll(async() => {
