@@ -61,7 +61,7 @@ jobs:
 
     - name: Store artifacts
     - uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          if-no-files-found: error
-          path: dist
+      with:
+        name: dist
+        if-no-files-found: error
+        path: dist
