@@ -1,4 +1,4 @@
-import { MsgQueue, SessionVerifierMiddleware } from '@twit2/std-library';
+import { AdminVeriferMiddleware, MsgQueue, SessionVerifierMiddleware } from '@twit2/std-library';
 import { ProfileRPC } from './rpc/ProfileRPC';
 
 /**
@@ -18,6 +18,7 @@ async function init(url: string) {
     const rpcc = new MsgQueue.rpc.RPCClient(mq);
     await rpcc.init('t2-auth-service');
     await SessionVerifierMiddleware.init(rpcc);
+    await AdminVeriferMiddleware.init(rpcc);
 }
 
 export const UserWorker = {

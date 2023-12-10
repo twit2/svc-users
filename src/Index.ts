@@ -1,11 +1,12 @@
 import { configDotenv } from 'dotenv';
 import express from 'express';
-import { ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-library';
+import { AdminVeriferMiddleware, ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-library';
 import { handleGetUser } from './routes/UserRetrieve'; 
 import { UserWorker } from './UserWorker';
 import { ProfileStore } from './ProfileStore';
 import { handleUpdateUser } from './routes/UserUpdate';
 import { handleGetLatestUsers } from './routes/UserGetLatest';
+import { handleVerifyUser } from './routes/UserVerify';
 require('express-async-errors');
 
 // Load ENV parameters
@@ -27,6 +28,9 @@ app.get('/@me', handleGetUser);
 app.patch('/@me', handleUpdateUser);
 app.get('/latest/:page', handleGetLatestUsers);
 app.get('/:id', handleGetUser);
+
+app.use(AdminVeriferMiddleware.handle);
+app.post('/:id/verify', handleVerifyUser);
 
 app.use(ErrorHandlingMiddleware.handle);
 

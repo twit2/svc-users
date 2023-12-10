@@ -66,6 +66,9 @@ async function updateUser(id: string, newUser: UserUpdateOp): Promise<User> {
 
     if(newUser.biography !== undefined)
         user.biography = newUser.biography;
+
+    if(newUser.verified !== undefined)
+        user.verified = newUser.verified;
     
     await user.save();
     return user.toJSON();

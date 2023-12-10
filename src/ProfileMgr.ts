@@ -4,6 +4,7 @@ import { ProfileStore } from "./ProfileStore";
 import { UserUpdateOp } from "./op/UserUpdateOp";
 import Ajv from "ajv";
 import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
+import { UserVerifyOp } from "./op/UserVerifyOp";
 
 const ajv = new Ajv();
 const PAGE_SIZE = 10;
@@ -138,6 +139,28 @@ async function getLatestProfiles(op: GenericPagedOp): Promise<PaginatedAPIData<U
 }
 
 /**
+ * Verifies a user.
+ */
+async function makeVerified(op: UserVerifyOp) {
+    const schema = {
+        type: "object",
+        properties: {
+            targetUser:  { type: "string" }
+        },
+        required: ["targetUser"],
+        additionalProperties: false
+    }
+
+    if(!ajv.validate(schema, op))
+        throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
+
+    return await ProfileStore.updateUser(op.targetUser, {
+        id: op.targetUser,
+        verified: true
+    });
+}
+
+/**
  * Retrieves a profile by id.
  * @param username The user id to retrieve the profile for.
  */
@@ -151,5 +174,6 @@ export const ProfileMgr = {
     getProfileByName,
     getLatestProfiles,
     getProfileById,
-    updateAvatar
+    updateAvatar,
+    makeVerified
 }

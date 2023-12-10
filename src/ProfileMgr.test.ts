@@ -105,6 +105,17 @@ describe('user profile manager tests', () => {
         expect(profiles.data?.length).toBe(2); // In this test, only 2 successful profiles were ever made
     })
 
+    test('profile: verify user', async() => {
+        const profile = await ProfileMgr.createProfile({
+            username: "test",
+            id: "test"
+        });
+
+        const updatedProfile = await ProfileMgr.makeVerified({targetUser: profile.id});
+        expect(updatedProfile.verified).toBe(true);
+    })
+
+
     afterAll(async() => {
         await mongoose.disconnect();
         await mongoServer.stop();
