@@ -10,6 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
+  # Build the source
   build:
 
     runs-on: ubuntu-latest
@@ -38,6 +39,7 @@ jobs:
         if-no-files-found: error
         path: dist
 
+  # Run tests
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -67,6 +69,7 @@ jobs:
 
     - run: npm test
 
+  # Run sonarcloud
   sonarcloud:
     needs: test
     name: SonarCloud
@@ -94,6 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  # Build docker image and publish to docker hub
   publish:
     needs: sonarcloud
     name: Publish to Docker Hub
@@ -113,7 +117,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: gustavofringgaming/t2-svc-users:latest
+          images: gustavofringgaming/t2-svc-users
 
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
