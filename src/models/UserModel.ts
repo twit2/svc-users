@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
-import { Limits, Regexes, User } from '@twit2/std-library';
+import { Limits, VersionedDoc, User } from '@twit2/std-library';
 
-export const UserModel = mongoose.model<User>('user', new mongoose.Schema({
+export const UserModel = mongoose.model<User & VersionedDoc>('user', new mongoose.Schema({
     id: {
         type: String,
         required: true
@@ -32,6 +32,7 @@ export const UserModel = mongoose.model<User>('user', new mongoose.Schema({
     },
     verified: {
         type: Boolean,
+        default: false,
         required: true
     },
     dateJoined: {
@@ -45,5 +46,10 @@ export const UserModel = mongoose.model<User>('user', new mongoose.Schema({
     following: {
         type: [],
         required: true
+    },
+    schemaVer: {
+        type: Number,
+        required: true,
+        default: 1
     }
 }));
