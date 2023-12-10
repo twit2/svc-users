@@ -16,7 +16,8 @@ export const UserModel = mongoose.model<User & VersionedDoc>('user', new mongoos
         type: String,
         required: true,
         min: Limits.uam.username.min,
-        max: Limits.uam.username.max
+        max: Limits.uam.username.max,
+        validate: (v: string)=>/^[a-zA-Z0-9_]*$/.test(v)
     },
     avatarURL: {
         type: String,

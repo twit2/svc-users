@@ -28,7 +28,7 @@ async function createProfile(op: UserInsertOp): Promise<User> {
         type: "object",
         properties: {
             id: { type: "string" },
-            username: { type: "string" },
+            username: { type: "string", minLength: Limits.uam.username.min, maxLength: Limits.uam.username.max, pattern: '^[a-zA-Z0-9_]*$' },
             avatarURL: { type: "string", minLength: Limits.general.hard.min, maxLength: Limits.general.hard.max },
             biography: { type: "string", minLength: Limits.userProfile.biography.min, maxLength: Limits.userProfile.biography.max }
         },
