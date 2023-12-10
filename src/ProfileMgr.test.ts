@@ -30,6 +30,11 @@ describe('user profile manager tests', () => {
         expect(user.id).not.toBeUndefined();
     });
 
+    test('profile: id lookup should succeed', async() => {
+        let user = await ProfileMgr.getProfileById("1234567");
+        expect(user).not.toBeUndefined();
+    });
+
     test('profile: should reject invalid id', async() =>{
         await TestingUtils.mustFailAsync(async()=>{
             await ProfileMgr.createProfile({ id: "", username: "username123" })
@@ -60,6 +65,10 @@ describe('user profile manager tests', () => {
         expect(user.biography).toBe("User profile text");
     });
 
+    test('profile: update should fail without valid user', async()=>{
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateProfile({ id: "oops" })}, "Update succeeded");
+    });
+
     test('profile: update biography to some text', async() => {
         const newProfile = await ProfileMgr.updateProfile({
             id: "123458889",
@@ -69,6 +78,15 @@ describe('user profile manager tests', () => {
         expect(newProfile.biography).toBe("Testing 12345");
     });
 
+    test('profile: update display name to some text', async() => {
+        const newProfile = await ProfileMgr.updateProfile({
+            id: "123458889",
+            displayName: "Testing 12345"
+        });
+
+        expect(newProfile.displayName).toBe("Testing 12345");
+    });
+
     test('profile: reject overflown biography update request', async() => {
         await TestingUtils.mustFailAsync(async()=>{
             await ProfileMgr.updateProfile({
@@ -76,6 +94,10 @@ describe('user profile manager tests', () => {
                 biography: "Testing 12345".repeat(200)
             });
         }, "biography was updated");
+    });
+
+    test('profile: get latest users should reject invalid filter', async() => {
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.getLatestProfiles({ filter: "invalid" as any, page: 0 })}, "Filter was valid");
     });
 
     test('profile: get latest users', async() => {
