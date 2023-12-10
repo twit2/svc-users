@@ -7,6 +7,7 @@ module.exports = {
         "/src/models",
         "/src/op",
         "/src/routes",
-        "/src/rpc"
+        "/src/rpc",
+        "/src/Index.ts"
     ]
 };
