@@ -10,7 +10,7 @@ import { UserRetrieveOp } from "../op/UserRetrieveOp";
  * @param next Next function.
  */
 export async function handleVerifyUser(req: Request, res: Response, next: NextFunction) {
-    const targetId = (req as Request & WithT2Session).session.id;
+    const targetId = req.params.id;
 
     res.contentType('json');
 
