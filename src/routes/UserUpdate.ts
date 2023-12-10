@@ -1,4 +1,4 @@
-import { APIRespConstructor, APIResponseCodes, WithT2Session } from "@twit2/std-library";
+import { APIRespConstructor, WithT2Session } from "@twit2/std-library";
 import { NextFunction, Request, Response } from "express";
 import { ProfileMgr } from "../ProfileMgr";
 import { UserRetrieveOp } from "../op/UserRetrieveOp";

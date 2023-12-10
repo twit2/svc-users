@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose from 'mongoose'
 import { Limits, VersionedDoc, User } from '@twit2/std-library';
 
 export const UserModel = mongoose.model<User & VersionedDoc>('user', new mongoose.Schema({
