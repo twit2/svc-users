@@ -65,7 +65,7 @@ jobs:
         path: dist
 
   test:
-
+    needs: build
     runs-on: ubuntu-latest
 
     strategy:
