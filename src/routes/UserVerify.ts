@@ -14,8 +14,9 @@ export async function handleVerifyUser(req: Request, res: Response, next: NextFu
 
     res.contentType('json');
 
-    const profile = await ProfileMgr.makeVerified({
-        targetUser: targetId
+    const profile = await ProfileMgr.setVerified({
+        targetUser: targetId,
+        verified: req.body.verified,
     });
 
     // Send updated object

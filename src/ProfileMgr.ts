@@ -141,13 +141,14 @@ async function getLatestProfiles(op: GenericPagedOp): Promise<PaginatedAPIData<U
 /**
  * Verifies a user.
  */
-async function makeVerified(op: UserVerifyOp) {
+async function setVerified(op: UserVerifyOp) {
     const schema = {
         type: "object",
         properties: {
-            targetUser:  { type: "string" }
+            targetUser: { type: "string" },
+            verified: { type: "boolean" }
         },
-        required: ["targetUser"],
+        required: ["targetUser", "verified"],
         additionalProperties: false
     }
 
@@ -156,7 +157,7 @@ async function makeVerified(op: UserVerifyOp) {
 
     return await ProfileStore.updateUser(op.targetUser, {
         id: op.targetUser,
-        verified: true
+        verified: op.verified
     });
 }
 
@@ -175,5 +176,5 @@ export const ProfileMgr = {
     getLatestProfiles,
     getProfileById,
     updateAvatar,
-    makeVerified
+    setVerified
 }

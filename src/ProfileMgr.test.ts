@@ -111,10 +111,18 @@ describe('user profile manager tests', () => {
             id: "test"
         });
 
-        const updatedProfile = await ProfileMgr.makeVerified({targetUser: profile.id});
+        const updatedProfile = await ProfileMgr.setVerified({targetUser: profile.id, verified: true});
         expect(updatedProfile.verified).toBe(true);
     })
 
+    test('profile: unverify user', async() => {
+        const profile = await ProfileMgr.getProfileByName('test');
+        expect(profile).not.toBeUndefined();
+        expect(profile).not.toBeNull();
+
+        const updatedProfile = await ProfileMgr.setVerified({targetUser: (profile as User).id, verified: false});
+        expect(updatedProfile.verified).toBe(false);
+    })
 
     afterAll(async() => {
         await mongoose.disconnect();
