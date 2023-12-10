@@ -153,6 +153,14 @@ describe('user profile manager tests', () => {
         expect(newProfile.avatarURL).toBe("/avatars/12345.png");
     });
 
+    test('profile: reject invalid avatar body', async() => {
+        const profile = await ProfileMgr.getProfileByName('test') as User;
+        expect(profile).not.toBeUndefined();
+        expect(profile).not.toBeNull();
+        
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateAvatar(undefined as any)}, "avatar was somehow published");
+    });
+
     test('profile: reject invalid avatar URL', async() => {
         const profile = await ProfileMgr.getProfileByName('test') as User;
         expect(profile).not.toBeUndefined();
@@ -168,6 +176,14 @@ describe('user profile manager tests', () => {
 
         const newProfile = await ProfileMgr.updateBanner({ id: profile.id, bannerURL: "/banners/12345.png" });
         expect(newProfile.bannerURL).toBe("/banners/12345.png");
+    });
+
+    test('profile: reject invalid banner body', async() => {
+        const profile = await ProfileMgr.getProfileByName('test') as User;
+        expect(profile).not.toBeUndefined();
+        expect(profile).not.toBeNull();
+        
+        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateBanner(undefined as any)}, "banner was somehow published");
     });
 
     test('profile: reject invalid banner URL', async() => {
