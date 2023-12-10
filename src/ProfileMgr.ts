@@ -6,18 +6,10 @@ import Ajv from "ajv";
 import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
 import { UserVerifyOp } from "./op/UserVerifyOp";
 import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
+import { UserGetProfileListOp } from "./op/UserGetProfileListOp";
 
 const ajv = new Ajv();
 const PAGE_SIZE = 10;
-
-const genericPageSchema = {
-    type: "object",
-    properties: {
-        page: { type: "number" }
-    },
-    required: ["page"],
-    additionalProperties: false
-}
 
 /**
  * Registers a new user profile.
@@ -157,14 +149,29 @@ async function getProfileByName(username: string) {
 /**
  * Retrieves the latest profiles.
  */
-async function getLatestProfiles(op: GenericPagedOp): Promise<PaginatedAPIData<User>> {
-    if(!ajv.validate(genericPageSchema, op))
+async function getLatestProfiles(op: UserGetProfileListOp): Promise<PaginatedAPIData<User>> {
+    const VALID_FILTERS = ["latest", "verified", "unverified"];
+
+    const schema = {
+        type: "object",
+        properties: {
+            filter: { type: "string" },
+            page: { type: "number" }
+        },
+        required: ["page"],
+        additionalProperties: false
+    }
+
+    if(!ajv.validate(schema, op))
         throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
 
+    if(!VALID_FILTERS.includes(op.filter))
+        throw new Error("Invalid filter.");
+    
     return {
         currentPage: -1,
         pageSize: PAGE_SIZE,
-        data: await ProfileStore.getLatestProfiles(op.page, PAGE_SIZE)
+        data: await ProfileStore.getLatestProfiles(op.filter, op.page, PAGE_SIZE)
     };
 }
 

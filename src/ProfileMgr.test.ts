@@ -96,9 +96,21 @@ describe('user profile manager tests', () => {
     });
 
     test('profile: get latest users', async() => {
-        const profiles = await ProfileMgr.getLatestProfiles({ page: 0 });
+        const profiles = await ProfileMgr.getLatestProfiles({ filter: "latest", page: 0 });
         expect(profiles.data).not.toBeUndefined();
         expect(profiles.data?.length).toBe(2); // In this test, only 2 successful profiles were ever made
+    });
+
+    test('profile: get latest verified users', async() => {
+        const profiles = await ProfileMgr.getLatestProfiles({ filter: "verified", page: 0 });
+        expect(profiles.data).not.toBeUndefined();
+        expect(profiles.data?.length).toBe(0); // No verified profiles were ever made.
+    });
+
+    test('profile: get latest unverified users', async() => {
+        const profiles = await ProfileMgr.getLatestProfiles({ filter: "unverified", page: 0 });
+        expect(profiles.data).not.toBeUndefined();
+        expect(profiles.data?.length).toBe(2); // All profiles are unverified as of now
     })
 
     test('profile: verify user', async() => {
@@ -109,7 +121,7 @@ describe('user profile manager tests', () => {
 
         const updatedProfile = await ProfileMgr.setVerified({targetUser: profile.id, verified: true});
         expect(updatedProfile.verified).toBe(true);
-    })
+    });
 
     test('profile: unverify user', async() => {
         const profile = await ProfileMgr.getProfileByName('test');
@@ -118,7 +130,7 @@ describe('user profile manager tests', () => {
 
         const updatedProfile = await ProfileMgr.setVerified({targetUser: (profile as User).id, verified: false});
         expect(updatedProfile.verified).toBe(false);
-    })
+    });
 
     test('profile: add avatar URL', async() => {
         const profile = await ProfileMgr.getProfileByName('test') as User;

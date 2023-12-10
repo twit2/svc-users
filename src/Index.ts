@@ -26,7 +26,7 @@ app.use(SessionVerifierMiddleware.handle);
 // ------------------------------------------------
 app.get('/@me', handleGetUser);
 app.patch('/@me', handleUpdateUser);
-app.get('/latest/:page', handleGetLatestUsers);
+app.get('/:filter/:page', handleGetLatestUsers);
 app.get('/:id', handleGetUser);
 
 app.use(AdminVeriferMiddleware.handle);

@@ -1,4 +1,4 @@
-import { APIRespConstructor, APIResponseCodes, WithT2Session } from "@twit2/std-library";
+import { APIRespConstructor } from "@twit2/std-library";
 import { NextFunction, Request, Response } from "express";
 import { ProfileMgr } from "../ProfileMgr";
 
@@ -9,9 +9,10 @@ import { ProfileMgr } from "../ProfileMgr";
  * @param next Next function.
  */
 export async function handleGetLatestUsers(req: Request, res: Response, next: NextFunction) {
+    const filter = req.params.filter as any; // TS will complain
     res.contentType('json');
 
-    const profiles = await ProfileMgr.getLatestProfiles({ page: parseInt((req.params as any).page) });
+    const profiles = await ProfileMgr.getLatestProfiles({ filter, page: parseInt((req.params as any).page) });
 
     if(profiles.data) {
         profiles.data.map(profile => ({

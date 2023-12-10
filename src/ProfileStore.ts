@@ -79,8 +79,17 @@ async function updateUser(id: string, newUser: UserUpdateOp): Promise<User> {
  * Gets the latest profiles/
  * @param op The operation arguments.
  */
-async function getLatestProfiles(page: number, limit: number) {
-    return await UserModel.find().sort({ dateJoined: -1 }).skip(page * limit).limit(limit);
+async function getLatestProfiles(filter: string, page: number, limit: number) {
+    switch(filter) {
+        case "unverified":
+            return await UserModel.find({ verified: false }).sort({ dateJoined: -1 }).skip(page * limit).limit(limit);
+        case "verified":
+            return await UserModel.find({ verified: true }).sort({ dateJoined: -1 }).skip(page * limit).limit(limit);
+        case "latest":
+            return await UserModel.find().sort({ dateJoined: -1 }).skip(page * limit).limit(limit);
+        default:
+            throw new Error("Invalid filter.");
+    }
 }
 
 /**
