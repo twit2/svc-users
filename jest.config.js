@@ -12,6 +12,7 @@ module.exports = {
         "src/op",
         "src/routes",
         "src/rpc",
-        "src/Index.ts"
+        "src/Index.ts",
+        "src/UserWorker.ts"
     ]
 };
