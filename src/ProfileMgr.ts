@@ -1,4 +1,4 @@
-import { APIError, APIResponseCodes, GenericPagedOp, Limits, PaginatedAPIData, Regexes, User, generateId } from "@twit2/std-library";
+import { APIError, APIResponseCodes, Limits, PaginatedAPIData, Regexes, User, generateId } from "@twit2/std-library";
 import { UserInsertOp } from "./op/UserInsertOp";
 import { ProfileStore } from "./ProfileStore";
 import { UserUpdateOp } from "./op/UserUpdateOp";

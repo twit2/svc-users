@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { UserModel } from "./models/UserModel";
-import { UserInsertOp } from "./op/UserInsertOp";
-import { Limits, User } from "@twit2/std-library";
+import { TestingUtils, User } from "@twit2/std-library";
 import { ProfileMgr } from "./ProfileMgr";
 
 describe('user profile manager tests', () => {
@@ -32,33 +31,21 @@ describe('user profile manager tests', () => {
     });
 
     test('profile: should reject invalid id', async() =>{
-        try {
-            await ProfileMgr.createProfile({ id: "", username: "username123" });
-        } catch(e) {
-            return;
-        }
-
-        throw new Error("Profile was created.");
+        await TestingUtils.mustFailAsync(async()=>{
+            await ProfileMgr.createProfile({ id: "", username: "username123" })
+        }, "id was not rejected");
     });
 
     test('profile: should reject empty username', async() =>{
-        try {
-            await ProfileMgr.createProfile({ id: "12345", username: "" });
-        } catch(e) {
-            return;
-        }
-
-        throw new Error("Profile was created.");
+        await TestingUtils.mustFailAsync(async()=>{
+            await ProfileMgr.createProfile({ id: "12345", username: "" })
+        }, "empty username was not rejected");
     });
 
     test('profile: should reject non-alphanumeric username', async() =>{
-        try {
-            await ProfileMgr.createProfile({ id: "12345", username: "😳😳😳" });
-        } catch(e) {
-            return;
-        }
-
-        throw new Error("Profile was created.");
+        await TestingUtils.mustFailAsync(async()=>{
+            await ProfileMgr.createProfile({ id: "12345", username: "😳😳😳" })
+        }, "username was not rejected");
     });
 
     test('profile: create extended profile (bio + avatarUrl)', async() =>{
@@ -83,16 +70,12 @@ describe('user profile manager tests', () => {
     });
 
     test('profile: reject overflown biography update request', async() => {
-        try {
+        await TestingUtils.mustFailAsync(async()=>{
             await ProfileMgr.updateProfile({
                 id: "123458889",
                 biography: "Testing 12345".repeat(200)
             });
-        } catch(e) {
-            return;
-        }
-
-        throw new Error("Biography was updated - this shouldn't happen!");
+        }, "biography was updated");
     });
 
     test('profile: get latest users', async() => {
