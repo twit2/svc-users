@@ -53,15 +53,15 @@ describe('user profile manager tests', () => {
     });
 
     test('profile: should reject invalid username', async() =>{
-        await TestingUtils.mustFailAsync(async()=>{ await ProfileMgr.createProfile({ id: "12345", username: "Test username!!!" }) }, "invalid username was not rejected");
+        await TestingUtils.mustFailAsync(async()=>{ await ProfileMgr.createProfile({ id: "123456", username: "Test username!!!" }) }, "invalid username was not rejected");
     });
 
     test('profile: should reject non-alphanumeric username', async() =>{
-        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.createProfile({ id: "12345", username: "😳😳😳" })}, "username was not rejected");
+        await TestingUtils.mustFailAsync(async()=>{ await ProfileMgr.createProfile({ id: "1234567", username: "😳😳😳" }) }, "username was not rejected");
     });
 
     test('profile: reject invalid avatar URL on profile creation', async() =>{
-        await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.createProfile({ id: "12345777", username: "test6645", avatarURL: 'urltest asdf][324' })}, "avatarURL was not rejected");
+        await TestingUtils.mustFailAsync(async()=>{ await ProfileMgr.createProfile({ id: "12345777", username: "test6645", avatarURL: 'urltest asdf][324' }) }, "avatarURL was not rejected");
     });
 
     test('profile: create extended profile (bio + avatarUrl)', async() =>{
