@@ -31,6 +31,9 @@ async function createProfile(op: UserInsertOp): Promise<User> {
     if(!ajv.validate(schema, op))
         throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
 
+    if(!/^[a-zA-Z0-9_]*$/.test(op.username))
+        throw new Error("Invalid username.");
+
     // Check avatar URL
     if(op.avatarURL) {
         if((op.avatarURL !== '') && (!Regexes.url_basic.test(op.avatarURL)))

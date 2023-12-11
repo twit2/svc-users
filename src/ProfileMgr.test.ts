@@ -52,6 +52,10 @@ describe('user profile manager tests', () => {
         await TestingUtils.mustFailAsync(async()=>{ await ProfileMgr.createProfile({ id: "12345", username: "" }) }, "empty username was not rejected");
     });
 
+    test('profile: should reject invalid username', async() =>{
+        await TestingUtils.mustFailAsync(async()=>{ await ProfileMgr.createProfile({ id: "12345", username: "Test username!!!" }) }, "invalid username was not rejected");
+    });
+
     test('profile: should reject non-alphanumeric username', async() =>{
         await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.createProfile({ id: "12345", username: "😳😳😳" })}, "username was not rejected");
     });
