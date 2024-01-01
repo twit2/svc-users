@@ -1,21 +1,7 @@
-import mongoose from "mongoose";
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { UserModel } from "./models/UserModel";
 import { TestingUtils, User } from "@twit2/std-library";
 import { ProfileMgr } from "./ProfileMgr";
 
 describe('user profile manager tests', () => {
-    let mongoServer: MongoMemoryServer;
-
-    beforeAll(async()=> {
-        // Setup server
-        mongoServer = await MongoMemoryServer.create();
-        await mongoose.connect(mongoServer.getUri(), { dbName: "t2-user-test" });
-
-        // Init models
-        await UserModel.init();
-    });
-
     // Check if we can make a basic user profile
     test('profile: create basic profile', async() => {
         let user = await ProfileMgr.createProfile({
@@ -196,10 +182,5 @@ describe('user profile manager tests', () => {
         expect(profile).not.toBeNull();
         await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateBanner({ id: profile.id, bannerURL: "invalidparts"})}, "invalid bannerURL was accepted");
         await TestingUtils.mustFailAsync(async()=>{await ProfileMgr.updateBanner({ id: profile.id, bannerURL: "/repository/invalid"})}, "bannerURL with invalid repository was accepted");
-    });
-
-    afterAll(async() => {
-        await mongoose.disconnect();
-        await mongoServer.stop();
     });
 });

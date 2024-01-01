@@ -13,6 +13,7 @@ module.exports = {
         "src/routes",
         "src/rpc",
         "src/Index.ts",
-        "src/UserWorker.ts"
+        "src/UserWorker.ts",
+        ".mock.ts"
     ]
 };

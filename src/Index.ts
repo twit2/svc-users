@@ -7,6 +7,7 @@ import { ProfileStore } from './ProfileStore';
 import { handleUpdateUser } from './routes/UserUpdate';
 import { handleGetLatestUsers } from './routes/UserGetLatest';
 import { handleVerifyUser } from './routes/UserVerify';
+import { RelationStore } from './RelationStore';
 require('express-async-errors');
 
 // Load ENV parameters
@@ -39,6 +40,7 @@ app.use(ErrorHandlingMiddleware.handle);
  */
 async function main() {
     await ProfileStore.init();
+    await RelationStore.init();
     await UserWorker.init(process.env.MQ_URL as string);
 
     // Listen at the port

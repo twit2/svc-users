@@ -10,15 +10,15 @@ import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
  */
 async function init() {
     if(process.env.DB_URL == null)
-        throw new Error("No database URL defined - is your .env file correct?");
+        throw new Error("[profile] No database URL defined - is your .env file correct?");
 
     // Connect to database
     try {
-        console.log(`Connecting to ${process.env.DB_URL}...`);
+        console.log(`[profile] Connecting to ${process.env.DB_URL}...`);
         await mongoose.connect(`${process.env.DB_URL}/${process.env.DB_NAME}`);
-        console.log(`Connected to database.`);
+        console.log(`[profile] Connected to database.`);
     } catch(e) {
-        console.error("Cannot connect to database server.");
+        console.error("[profile] Cannot connect to database server.");
         return;
     }
 
