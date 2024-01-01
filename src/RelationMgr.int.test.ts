@@ -1,4 +1,4 @@
-import './ProfileMgr.test';
+import './RelationMgr.test';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { RelationModel } from './models/RelationModel';
