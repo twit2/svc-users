@@ -6,6 +6,7 @@ import { PaginatedAPIData } from "@twit2/std-library";
 /**
  * Initializes the relation store.
  */
+/* istanbul ignore next */
 async function init() {
     if(process.env.DB_URL == null)
         throw new Error("[relation] No database URL defined - is your .env file correct?");

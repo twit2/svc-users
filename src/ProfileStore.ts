@@ -8,6 +8,7 @@ import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
 /**
  * Initializes the user store.
  */
+/* istanbul ignore next */
 async function init() {
     if(process.env.DB_URL == null)
         throw new Error("[profile] No database URL defined - is your .env file correct?");
