@@ -1,7 +1,7 @@
 import { Limits, User } from '@twit2/std-library'
-import { UserUpdateOp } from "./op/UserUpdateOp";
-import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
-import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
+import { UserUpdateOp } from "../../op/UserUpdateOp";
+import { UserAvatarUpdateOp } from "../../op/UserAvatarUpdateOp";
+import { UserBannerUpdateOp } from "../../op/UserBannerUpdateOp";
 import Ajv from "ajv";
 
 const ajv = new Ajv();

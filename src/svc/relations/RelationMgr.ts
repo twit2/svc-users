@@ -1,8 +1,8 @@
 import Ajv from "ajv";
 import { APIError, APIResponseCodes, Limits, PaginatedAPIData } from "@twit2/std-library";
-import { RelationManipulationOp } from "./op/RelationManipulationOp";
-import { Relation, RelationType } from "./types/Relation";
-import { ProfileMgr } from "./ProfileMgr";
+import { RelationManipulationOp } from "../../op/RelationManipulationOp";
+import { Relation, RelationType } from "../../types/Relation";
+import { ProfileMgr } from "../profile/ProfileMgr";
 import { RelationStore } from "./RelationStore";
 
 const ajv = new Ajv();

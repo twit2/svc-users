@@ -1,4 +1,4 @@
-import { Relation, RelationType } from "./types/Relation";
+import { Relation, RelationType } from "../../types/Relation";
 
 const relations : Relation[] = [];
 

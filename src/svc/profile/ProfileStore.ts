@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { UserModel } from "./models/UserModel";
+import { UserModel } from "../../models/UserModel";
 import { User } from '@twit2/std-library'
-import { UserUpdateOp } from "./op/UserUpdateOp";
-import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
-import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
+import { UserUpdateOp } from "../../op/UserUpdateOp";
+import { UserAvatarUpdateOp } from "../../op/UserAvatarUpdateOp";
+import { UserBannerUpdateOp } from "../../op/UserBannerUpdateOp";
 
 /**
  * Initializes the user store.

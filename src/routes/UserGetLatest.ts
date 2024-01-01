@@ -1,6 +1,6 @@
 import { APIRespConstructor } from "@twit2/std-library";
 import { NextFunction, Request, Response } from "express";
-import { ProfileMgr } from "../ProfileMgr";
+import { ProfileMgr } from "../svc/profile/ProfileMgr";
 
 /**
  * Handles the latest user retrieval route.

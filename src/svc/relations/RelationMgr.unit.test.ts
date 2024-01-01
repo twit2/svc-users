@@ -1,8 +1,8 @@
 import './RelationMgr.test';
 
-jest.mock('./ProfileStore', ()=>({
-    ...jest.requireActual('./ProfileStore'),
-    ProfileStore: require('./ProfileStore.mock').ProfileStore
+jest.mock('../profile/ProfileStore', ()=>({
+    ...jest.requireActual('../profile/ProfileStore'),
+    ProfileStore: require('../profile/ProfileStore.mock').ProfileStore
 }));
 
 jest.mock('./RelationStore', ()=>({

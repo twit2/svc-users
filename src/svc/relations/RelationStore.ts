@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { RelationModel } from "./models/RelationModel";
-import { Relation, RelationType } from "./types/Relation";
+import { RelationModel } from "../../models/RelationModel";
+import { Relation, RelationType } from "../../types/Relation";
 import { PaginatedAPIData } from "@twit2/std-library";
 
 /**

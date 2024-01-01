@@ -3,11 +3,11 @@ import express from 'express';
 import { AdminVeriferMiddleware, ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-library';
 import { handleGetUser } from './routes/UserRetrieve'; 
 import { UserWorker } from './UserWorker';
-import { ProfileStore } from './ProfileStore';
+import { ProfileStore } from './svc/profile/ProfileStore';
 import { handleUpdateUser } from './routes/UserUpdate';
 import { handleGetLatestUsers } from './routes/UserGetLatest';
 import { handleVerifyUser } from './routes/UserVerify';
-import { RelationStore } from './RelationStore';
+import { RelationStore } from './svc/relations/RelationStore';
 require('express-async-errors');
 
 // Load ENV parameters

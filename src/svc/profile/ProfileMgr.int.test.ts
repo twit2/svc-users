@@ -1,7 +1,7 @@
 import './ProfileMgr.test';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { UserModel } from './models/UserModel';
+import { UserModel } from '../../models/UserModel';
 
 let mongoServer: MongoMemoryServer;
 

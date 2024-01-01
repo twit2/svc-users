@@ -1,7 +1,7 @@
 import { TestingUtils, User, generateId } from "@twit2/std-library";
-import { ProfileMgr } from "./ProfileMgr";
+import { ProfileMgr } from "../profile/ProfileMgr";
 import { RelationMgr } from "./RelationMgr";
-import { RelationType } from "./types/Relation";
+import { RelationType } from "../../types/Relation";
 
 describe('relation manager tests', ()=>{
     let profileA: User;
