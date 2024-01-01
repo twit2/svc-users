@@ -7,8 +7,7 @@ describe('relation manager tests', ()=>{
     let profileA: User;
     let profileB: User;
 
-    // Initialize profiles
-    beforeAll(async ()=>{
+    test('user A should follow existing user B', async()=>{
         profileA = await ProfileMgr.createProfile({
             username: "userA",
             id: generateId({ workerId: 0, procId: 1 })
@@ -17,10 +16,8 @@ describe('relation manager tests', ()=>{
         profileB = await ProfileMgr.createProfile({
             username: "userB",
             id: generateId({ workerId: 0, procId: 1 })
-        });        
-    });
+        });  
 
-    test('user A should follow existing user B', async()=>{
         const dto = { source: profileA.id, dest: profileB.id };
         const relation = await RelationMgr.follow(dto);
         expect(relation.source).toBe(profileA.id);
