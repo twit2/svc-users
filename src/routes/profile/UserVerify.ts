@@ -1,23 +1,22 @@
-import { APIRespConstructor, WithT2Session } from "@twit2/std-library";
+import { APIRespConstructor } from "@twit2/std-library";
 import { NextFunction, Request, Response } from "express";
-import { ProfileMgr } from "../svc/profile/ProfileMgr";
-import { UserRetrieveOp } from "../op/UserRetrieveOp";
+import { ProfileMgr } from "../../svc/profile/ProfileMgr";
+import { UserRetrieveOp } from "../../op/UserRetrieveOp";
 
 /**
- * Handles the user update route.
+ * Handles the administrative user verify route.
  * @param req The request object.
  * @param res The response object.
  * @param next Next function.
  */
-export async function handleUpdateUser(req: Request, res: Response, next: NextFunction) {
-    const targetId = (req as Request & WithT2Session).session.id;
+export async function handleVerifyUser(req: Request, res: Response, next: NextFunction) {
+    const targetId = req.params.id;
 
     res.contentType('json');
 
-    const profile = await ProfileMgr.updateProfile({
-        id: targetId,
-        biography: req.body.biography,
-        displayName: req.body.displayName
+    const profile = await ProfileMgr.setVerified({
+        targetUser: targetId,
+        verified: req.body.verified,
     });
 
     // Send updated object

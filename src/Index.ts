@@ -1,13 +1,14 @@
 import { configDotenv } from 'dotenv';
 import express from 'express';
 import { AdminVeriferMiddleware, ErrorHandlingMiddleware, SessionVerifierMiddleware } from '@twit2/std-library';
-import { handleGetUser } from './routes/UserRetrieve'; 
+import { handleGetUser } from './routes/profile/UserRetrieve'; 
 import { UserWorker } from './UserWorker';
 import { ProfileStore } from './svc/profile/ProfileStore';
-import { handleUpdateUser } from './routes/UserUpdate';
-import { handleGetLatestUsers } from './routes/UserGetLatest';
-import { handleVerifyUser } from './routes/UserVerify';
+import { handleUpdateUser } from './routes/profile/UserUpdate';
+import { handleGetLatestUsers } from './routes/profile/UserGetLatest';
+import { handleVerifyUser } from './routes/profile/UserVerify';
 import { RelationStore } from './svc/relations/RelationStore';
+import { handleGetList as handleGetRelationsList } from './routes/relations/RelationGetList';
 require('express-async-errors');
 
 // Load ENV parameters
@@ -27,6 +28,7 @@ app.use(SessionVerifierMiddleware.handle);
 // ------------------------------------------------
 app.get('/@me', handleGetUser);
 app.patch('/@me', handleUpdateUser);
+app.get('/relations/:filter/:id', handleGetRelationsList);
 app.get('/:filter/:page', handleGetLatestUsers);
 app.get('/:id', handleGetUser);
 
