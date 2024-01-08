@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { RelationModel } from "../../models/RelationModel";
 import { Relation, RelationType } from "../../types/Relation";
-import { PaginatedAPIData } from "@twit2/std-library";
 
 /**
  * Initializes the relation store.
@@ -12,13 +11,15 @@ async function init() {
         throw new Error("[relation] No database URL defined - is your .env file correct?");
 
     // Connect to database
-    try {
-        console.log(`[relation] Connecting to ${process.env.DB_URL}...`);
-        await mongoose.connect(`${process.env.DB_URL}/${process.env.DB_NAME}`);
-        console.log(`[relation] Connected to database.`);
-    } catch(e) {
-        console.error("[relation] Cannot connect to database server.");
-        return;
+    if(mongoose.connection.readyState !== 1) {
+        try {
+            console.log(`Connecting to ${process.env.DB_URL}...`);
+            await mongoose.connect(`${process.env.DB_URL}/${process.env.DB_NAME}`);
+            console.log(`Connected to database.`);
+        } catch(e) {
+            console.error("Cannot connect to database server.");
+            return;
+        }
     }
 
     // Init models

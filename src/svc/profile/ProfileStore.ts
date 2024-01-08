@@ -14,13 +14,15 @@ async function init() {
         throw new Error("[profile] No database URL defined - is your .env file correct?");
 
     // Connect to database
-    try {
-        console.log(`[profile] Connecting to ${process.env.DB_URL}...`);
-        await mongoose.connect(`${process.env.DB_URL}/${process.env.DB_NAME}`);
-        console.log(`[profile] Connected to database.`);
-    } catch(e) {
-        console.error("[profile] Cannot connect to database server.");
-        return;
+    if(mongoose.connection.readyState !== 1) {
+        try {
+            console.log(`Connecting to ${process.env.DB_URL}...`);
+            await mongoose.connect(`${process.env.DB_URL}/${process.env.DB_NAME}`);
+            console.log(`Connected to database.`);
+        } catch(e) {
+            console.error("Cannot connect to database server.");
+            return;
+        }
     }
 
     // Init models
