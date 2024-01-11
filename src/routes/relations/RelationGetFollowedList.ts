@@ -26,14 +26,21 @@ export async function handleGetRelationList(req: Request, res: Response, next: N
         return;
     }
 
+    let data;
+
     switch(relation) {
         case "following":
-            return await RelationMgr.getFollowing(page, uid);
+            data = await RelationMgr.getFollowing(page, uid);
+            break;
         case "followers":
-            return await RelationMgr.getFollowers(page, uid);
+            data = await RelationMgr.getFollowers(page, uid);
+            break;
         case "blocked":
-            return await RelationMgr.getBlockedUsers(page, uid);
+            data = await RelationMgr.getBlockedUsers(page, uid);
+            break;
         default:
             throw APIError.fromCode(APIResponseCodes.INVALID_REQUEST_BODY);
     }
+
+    res.send(APIRespConstructor.success(data));
 }
