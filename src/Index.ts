@@ -11,6 +11,7 @@ import { RelationStore } from './svc/relations/RelationStore';
 import { handleGetRelationList } from './routes/relations/RelationGetFollowedList';
 import { handleFollowUser } from './routes/relations/RelationAddFollow';
 import { handleUnfollowUser } from './routes/relations/RelationUnfollow';
+import { handleGetUserRelationStats } from './routes/relations/RelationGetUserRelationStats';
 require('express-async-errors');
 
 // Load ENV parameters
@@ -31,6 +32,7 @@ app.use(SessionVerifierMiddleware.handle);
 app.get('/@me', handleGetUser);
 app.patch('/@me', handleUpdateUser);
 app.get('/relations/:relation/:username/:page', handleGetRelationList);
+app.get('/relations/stats/:username', handleGetUserRelationStats);
 app.post('/relations/follow', handleFollowUser);
 app.delete('/relations/follow', handleUnfollowUser);
 app.get('/:filter/:page', handleGetLatestUsers);

@@ -135,6 +135,13 @@ async function getBlockedUsers(page: number, userId: string): Promise<PaginatedA
     return { pageSize: PAGE_SIZE, currentPage: page, data: await RelationStore.getBlockedUsers(page, PAGE_SIZE, userId) };
 }
 
+/**
+ * Gets relation stats.
+ */
+async function getRelationStats(source: string) {
+    return RelationStore.getRelationStats(source);
+}
+
 export const RelationMgr = {
     follow,
     unfollow,
@@ -144,5 +151,6 @@ export const RelationMgr = {
     getRelations,
     getFollowers,
     getFollowing,
-    getBlockedUsers
+    getBlockedUsers,
+    getRelationStats
 }

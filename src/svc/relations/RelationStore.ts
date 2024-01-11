@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { RelationModel } from "../../models/RelationModel";
 import { Relation, RelationType } from "../../types/Relation";
+import { UserRelationStatistics } from "../../types/UserRelationStatistics";
 
 /**
  * Initializes the relation store.
@@ -98,6 +99,18 @@ async function getBlockedUsers(page: number, limit: number, userId: string): Pro
     return (await RelationModel.find({ source: userId, type: RelationType.BLOCK }).skip(page * limit).limit(limit)).map(x => x.toJSON());
 }
 
+/**
+ * Gets relations stats.
+ * @param source The source user to get stats for.
+ */
+async function getRelationStats(source: string): Promise<UserRelationStatistics> {
+    return {
+        following: await RelationModel.count({ source, type: RelationType.FOLLOW }),
+        followers: await RelationModel.count({ dest: source, type: RelationType.FOLLOW }),
+        blockedUsers: await RelationModel.count({ source, type: RelationType.BLOCK })
+    }
+}
+
 export const RelationStore = {
     findRelation,
     createRelation,
@@ -106,5 +119,6 @@ export const RelationStore = {
     getFollowers,
     getFollowing,
     getBlockedUsers,
+    getRelationStats,
     init
 }

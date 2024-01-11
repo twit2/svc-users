@@ -105,6 +105,17 @@ async function getBlockedUsers(page: number, limit: number, userId: string): Pro
     return _mock_paginate(relations.filter(x => (x.source === userId) && (x.type === RelationType.BLOCK)), page * limit, limit);
 }
 
+/**
+ * Gets relation stats.
+ */
+async function getRelationStats(source: string) {
+    return {
+        following: relations.filter(x => (x.source === source) && (x.type === RelationType.FOLLOW)),
+        followers: relations.filter(x => (x.dest === source) && (x.type === RelationType.FOLLOW)),
+        blockedUsers: relations.filter(x => (x.source === source) && (x.type === RelationType.BLOCK))
+    }
+}
+
 export const RelationStore = {
     findRelation,
     createRelation,
@@ -113,5 +124,6 @@ export const RelationStore = {
     getFollowers,
     getFollowing,
     getBlockedUsers,
+    getRelationStats,
     init
 }
