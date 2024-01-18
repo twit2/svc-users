@@ -1,5 +1,6 @@
 import { AdminVeriferMiddleware, MsgQueue, SessionVerifierMiddleware } from '@twit2/std-library';
 import { ProfileRPC } from './rpc/ProfileRPC';
+import { RelationRPC } from './rpc/RelationRPC';
 
 /**
  * Initializes the user worker.
@@ -13,6 +14,7 @@ async function init(url: string) {
     const server = new MsgQueue.rpc.RPCServer(mq);
     await server.init('t2-user-service');
     ProfileRPC.init(server);
+    RelationRPC.init(server);
 
     // Setup rpc client
     const rpcc = new MsgQueue.rpc.RPCClient(mq);
