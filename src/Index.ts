@@ -12,6 +12,7 @@ import { handleGetRelationList } from './routes/relations/RelationGetFollowedLis
 import { handleFollowUser } from './routes/relations/RelationAddFollow';
 import { handleUnfollowUser } from './routes/relations/RelationUnfollow';
 import { handleGetUserRelationStats } from './routes/relations/RelationGetUserRelationStats';
+import { handleGetRelationState } from './routes/relations/RelationGetState';
 require('express-async-errors');
 
 // Load ENV parameters
@@ -35,6 +36,7 @@ app.get('/relations/:relation/:username/:page', handleGetRelationList);
 app.get('/relations/stats/:username', handleGetUserRelationStats);
 app.post('/relations/follow', handleFollowUser);
 app.delete('/relations/follow', handleUnfollowUser);
+app.get('/relations/state/:id', handleGetRelationState);
 app.get('/:filter/:page', handleGetLatestUsers);
 app.get('/:id', handleGetUser);
 

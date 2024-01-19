@@ -4,6 +4,7 @@ import { RelationManipulationOp } from "../../op/RelationManipulationOp";
 import { Relation, RelationType } from "../../types/Relation";
 import { ProfileMgr } from "../profile/ProfileMgr";
 import { RelationStore } from "./RelationStore";
+import { RelationState } from "../../types/RelationState";
 
 const ajv = new Ajv();
 const PAGE_SIZE = 10;
@@ -142,12 +143,25 @@ async function getRelationStats(source: string) {
     return RelationStore.getRelationStats(source);
 }
 
+/**
+ * Gets the relation state of user B (dest) in regards to user A (source).
+ * @param op The dto.
+ */
+async function getState(op: RelationManipulationOp): Promise<RelationState> {
+    return {
+        following: await hasFollowed(op),
+        followed: await hasFollowed({ source: op.dest, dest: op.source }),
+        blocked: await isBlocked(op),
+    }
+}
+
 export const RelationMgr = {
     follow,
     unfollow,
     hasFollowed,
     block,
     isBlocked,
+    getState,
     getRelations,
     getFollowers,
     getFollowing,
