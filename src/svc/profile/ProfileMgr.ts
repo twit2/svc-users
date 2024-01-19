@@ -1,12 +1,12 @@
 import { APIError, APIResponseCodes, Limits, PaginatedAPIData, Regexes, User } from "@twit2/std-library";
-import { UserInsertOp } from "./op/UserInsertOp";
+import { UserInsertOp } from "../../op/UserInsertOp";
 import { ProfileStore } from "./ProfileStore";
-import { UserUpdateOp } from "./op/UserUpdateOp";
+import { UserUpdateOp } from "../../op/UserUpdateOp";
+import { UserAvatarUpdateOp } from "../../op/UserAvatarUpdateOp";
+import { UserVerifyOp } from "../../op/UserVerifyOp";
+import { UserBannerUpdateOp } from "../../op/UserBannerUpdateOp";
+import { UserGetProfileListOp } from "../../op/UserGetProfileListOp";
 import Ajv from "ajv";
-import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
-import { UserVerifyOp } from "./op/UserVerifyOp";
-import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
-import { UserGetProfileListOp } from "./op/UserGetProfileListOp";
 
 const ajv = new Ajv();
 const PAGE_SIZE = 10;

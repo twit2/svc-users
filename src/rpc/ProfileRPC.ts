@@ -1,6 +1,6 @@
 import { RPCServer } from "@twit2/std-library/dist/comm/rpc/RPCServer";
 import { UserInsertOp } from "../op/UserInsertOp";
-import { ProfileMgr } from "../ProfileMgr";
+import { ProfileMgr } from "../svc/profile/ProfileMgr";
 import { UserAvatarUpdateOp } from "../op/UserAvatarUpdateOp";
 import { UserBannerUpdateOp } from "../op/UserBannerUpdateOp";
 

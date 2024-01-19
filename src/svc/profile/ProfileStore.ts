@@ -1,25 +1,28 @@
 import mongoose from "mongoose";
-import { UserModel } from "./models/UserModel";
+import { UserModel } from "../../models/UserModel";
 import { User } from '@twit2/std-library'
-import { UserUpdateOp } from "./op/UserUpdateOp";
-import { UserAvatarUpdateOp } from "./op/UserAvatarUpdateOp";
-import { UserBannerUpdateOp } from "./op/UserBannerUpdateOp";
+import { UserUpdateOp } from "../../op/UserUpdateOp";
+import { UserAvatarUpdateOp } from "../../op/UserAvatarUpdateOp";
+import { UserBannerUpdateOp } from "../../op/UserBannerUpdateOp";
 
 /**
  * Initializes the user store.
  */
+/* istanbul ignore next */
 async function init() {
     if(process.env.DB_URL == null)
-        throw new Error("No database URL defined - is your .env file correct?");
+        throw new Error("[profile] No database URL defined - is your .env file correct?");
 
     // Connect to database
-    try {
-        console.log(`Connecting to ${process.env.DB_URL}...`);
-        await mongoose.connect(`${process.env.DB_URL}/${process.env.DB_NAME}`);
-        console.log(`Connected to database.`);
-    } catch(e) {
-        console.error("Cannot connect to database server.");
-        return;
+    if(mongoose.connection.readyState !== 1) {
+        try {
+            console.log(`Connecting to ${process.env.DB_URL}...`);
+            await mongoose.connect(`${process.env.DB_URL}/${process.env.DB_NAME}`);
+            console.log(`Connected to database.`);
+        } catch(e) {
+            console.error("Cannot connect to database server.");
+            return;
+        }
     }
 
     // Init models
